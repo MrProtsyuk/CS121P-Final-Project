@@ -306,6 +306,7 @@ def whisperingWillows(player: Player):
             if player.dungeon_key == True:
                 player.potion = player.potion + 3
                 print("""OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!\n
+                      My name was Richard and I used to be a normal fellow who ran The Tavern in Quigley Kingdom\n
                       I see by the claw marks on your armor that you've paid a visit to The Ghoul...
                       Go to Mount Galdr, you will find Meijer there...""")
                 time.sleep(7)
@@ -316,6 +317,7 @@ def whisperingWillows(player: Player):
             else:
                 player.potion = player.potion + 3
                 print("""OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!\n
+                      My name was Richard and I used to be a normal fellow who ran The Tavern in Quigley Kingdom\n
                       If it might help, he is often seen in The Dungeon but be careful!\n
                       The Ghoul resides there in the darkness...\n""")
                 time.sleep(7)
@@ -348,10 +350,32 @@ __/__/_______/___/__\___\__________________________________________________
                               MOUNT GALDR""")
 
 def end_Game_One():
-    print("this is the end of the game")
+    print("""\n And as you dove down to towards the lava pit
+        you were able to catch The Object in the knick of time.
+        You look back and Meijer The Mystic had vanished.
+        You headed back down the mountain and presented The Object to King John.
+        While you were on adventures, he found a mage that could use The Object
+        to reverse Meijers magic. Using The Scroll of Snotor, the mage was able
+        to undo the magic. Oswin (The Ghoul) and Richard (The Troll) were finally able to
+        return to their homes.
+        
+        But out there in the darkness, with a sinister laugh echoing through the valley
+          Meijer still resided and King John and his knights were ready for when he would return...""")
+    time.sleep(13)
+    print("""╔╦╗╦ ╦╔═╗  ╔═╗╔╗╔╔╦╗
+ ║ ╠═╣║╣   ║╣ ║║║ ║║
+ ╩ ╩ ╩╚═╝  ╚═╝╝╚╝═╩╝""")
 
 def end_Game_Two():
-    print("this too is the end of the game")
+    print("""\n And as you ran toward Meijer to bind him, you looked back to see
+        The Object fall into the lava pit. Returning to the kingdom, King John placed
+        Meijer into a special chamber that was able to prevent him from using his magic.
+        Sadly, due to The Object being lost, Meijers magic could not be reversed and
+        Oswin (The Ghoul) and Richard (The Troll) were stuck in their monstrous states forever. """)
+    time.sleep(10)
+    print("""╔╦╗╦ ╦╔═╗  ╔═╗╔╗╔╔╦╗
+ ║ ╠═╣║╣   ║╣ ║║║ ║║
+ ╩ ╩ ╩╚═╝  ╚═╝╝╚╝═╩╝""")
 
 def heal_up(player: Player):
     if player.potion == 0:
@@ -396,5 +420,5 @@ def main():
         else:
             print("Please Enter a valid input")
 
-whisperingWillows(player=Player(Character(100, "k", 12, 3, False, False)))
+theDungeon(player=Player(Character(100, "k", 12, 3, False, False)))
 
