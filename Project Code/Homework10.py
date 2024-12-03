@@ -183,6 +183,7 @@ _____----- |     ]              [ ||||||| ]              [     |
             print("Please Enter a vaild input")
 
 def theDungeon(player: Player):
+    # ASCII Art from: https://www.asciiart.eu/text-to-ascii-art
     print("""\n    ================================
      ||     ||<(.)>||<(.)>||     || 
      ||    _||     ||     ||_    || 
@@ -194,12 +195,9 @@ def theDungeon(player: Player):
     ================================
               THE DUNGEON\n""")
     time.sleep(4)
-    if Player.dungeon_key == True:
-        print("yay")
-    else:
-        print("nay")
 
 def whisperingWillows(player: Player):
+    # ASCII Art from: https://www.asciiart.eu/text-to-ascii-art
     print("""\n                             ..---.......                                    
                             .-...........-.                                  
                          .-.-.. .....-.....-.                                
@@ -231,7 +229,7 @@ def whisperingWillows(player: Player):
     time.sleep(4)
     print("As you walk into The Whispering Willows,\n you hear strange things and then quite. \n Almost a bit too quiet...")
     time.sleep(4)
-    print("UP FROM THE RIVER THE TROLL APPEARS, and he is singing a song\n")
+    print("\nUP FROM THE RIVER THE TROLL APPEARS, and he is singing a song\n")
     troll = Troll(Enemy(100, "The Troll", 10))
     time.sleep(2)
     print("""\n           As the cool fog rolls,
@@ -264,6 +262,7 @@ def whisperingWillows(player: Player):
         if mountain_input == "2":
             print("\n'So you got past the first one,\n this next one won't be as easy.'\n")
             time.sleep(2)
+            break
         else:
             player_hp = troll.troll_attack(player)
             if player_hp <= 0:
@@ -283,6 +282,7 @@ def whisperingWillows(player: Player):
         if footsteps_input == "4":
             print("\n'BLAST, two down,\n this last one is my favorite.'\n")
             time.sleep(2)
+            break
         else:
             player_hp = troll.troll_attack(player)
             if player_hp <= 0:
@@ -300,15 +300,29 @@ def whisperingWillows(player: Player):
                         What am I?\n""")
         echo_input = input("An Echo (1), A Bird (2), A Ghost (3), A Flute (4): ")
         if echo_input == "1":
-            print("\n'A clever one you are! Now what are you looking for?\n Why are you in my woods?'\n")
-            time.sleep(2)
+            print("\n'A clever one you are! For your bravery I will give you 3 health potions! \n Now what are you looking for?\n Why are you in my woods?'\n")
+            time.sleep(5)
             print("'I am looking for Meijer The Mystic, have you seen him?'")
             if player.dungeon_key == True:
-                print("Go to Galdr")
+                player.potion = player.potion + 3
+                print("""OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!\n
+                      I see by the claw marks on your armor that you've paid a visit to The Ghoul...
+                      Go to Mount Galdr, you will find Meijer there...""")
+                time.sleep(7)
+                print("To Mount Galdr we go...")
+                time.sleep(2)
                 mountGaldr(player)
+                break
             else:
-                print("go to the dungeon")
+                player.potion = player.potion + 3
+                print("""OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!\n
+                      If it might help, he is often seen in The Dungeon but be careful!\n
+                      The Ghoul resides there in the darkness...\n""")
+                time.sleep(7)
+                print("To The Dungeon we go...")
+                time.sleep(2)
                 theDungeon(player)
+                break
         else:
             player_hp = troll.troll_attack(player)
             if player_hp <= 0:
@@ -358,17 +372,9 @@ def heal_up(player: Player):
                 heal_choice = False
                 print("No potions were used")
 
-def mountain_Riddle():
-    print("Mountain Riddle")
-
-def footsteps_Riddle():
-    print("Footsteps Riddle")
-
-def echo_Riddle():
-    print("Echo Riddle")
 
 def lossGame():
-    print("Oh no you died!\n Please go on this journey again to find out what happens at the end!\n")
+    print("\nOh no you died!\n Please go on this journey again to find out what happens at the end!\n")
 
 def main():
     main_menu = True
@@ -390,5 +396,5 @@ def main():
         else:
             print("Please Enter a valid input")
 
-whisperingWillows(player=Player(Character(10, "k", 12, 3, False, False)))
+whisperingWillows(player=Player(Character(100, "k", 12, 3, False, False)))
 
