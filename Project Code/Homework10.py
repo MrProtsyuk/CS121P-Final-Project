@@ -29,13 +29,13 @@ class Player(Character):
     def player_attack(self, other_char):
         self.attack = int(random.randrange(12, 18))
         other_char.health = other_char.health - self.attack
+        return other_char.health
     
     def use_potion(self):
         self.potion = self.potion - 1
         self.health = self.health + 10
         return self.health
     
-
 class Troll(Enemy):
     def __init__(self, troll: Enemy):
         health = troll.health
@@ -58,10 +58,7 @@ class Ghoul(Enemy):
     def ghoul_attack(self, other_char):
         self.attack = int(random.randrange(7, 10))
         other_char.health = other_char.health - self.attack
-        if other_char.health < 0:
-            return lossGame()
-        else:
-            return other_char.health
+        return other_char.health
     
 class Meijer(Enemy):
     def __init__(self, meijer: Enemy):
@@ -73,10 +70,7 @@ class Meijer(Enemy):
     def meijer_attack(self, other_char):
         self.attack = int(random.randrange(9, 13))
         other_char.health = other_char.health - self.attack
-        if other_char.health < 0:
-            return lossGame()
-        else:
-            return other_char.health
+        return other_char.health
 
 def intro():
     intro_choice = True
@@ -85,8 +79,8 @@ def intro():
  ║ ╠═╣║╣   ║═╬╗║ ║║╣ ╚═╗ ║   ╠╣ ║ ║╠╦╝   ║ ╠═╣║╣   ║ ║╠╩╗ ║║╣ ║   ║ 
  ╩ ╩ ╩╚═╝  ╚═╝╚╚═╝╚═╝╚═╝ ╩   ╚  ╚═╝╩╚═   ╩ ╩ ╩╚═╝  ╚═╝╚═╝╚╝╚═╝╚═╝ ╩ 
 \n""")
-    time.sleep(1)
-    print("All is quiet in the land the Quigley Kingdom and then...\n")
+    time.sleep(4)
+    print("All is quiet in the land of the Quigley Kingdom and then...\n")
     time.sleep(2) 
     print("THUNDER STRIKES\n") 
     time.sleep(1)
@@ -95,16 +89,16 @@ def intro():
         intro_decision = input("Do you investigate? (1), or, Do you go back to sleep? (2): ")
         if intro_decision == "1":
             intro_choice = False
-            print("You get up out of bed and make your way to the hall...\n")
-            time.sleep(3)
+            print("\nYou get up out of bed and make your way to the hall...\n")
+            time.sleep(4)
             print("You run over to see the king knocked out on the floor...\n")
-            time.sleep(3)
+            time.sleep(4)
             print("In the shadows, a dark hooded figure runs away...\n")
-            time.sleep(3)
+            time.sleep(4)
             print("With a stark and sinister laugh he disappears into the night,\n you look back down to see King John stirring.\n")
             time.sleep(4)
             print("With a weak voice he says, 'Mejier The Mystic has returned...'\n")
-            time.sleep(3)
+            time.sleep(4)
             print("You quickly go to put on your armor but the king tells you to stop\n and wait until morning. You head back to bed.\n")
             time.sleep(4)
             print("Z")
@@ -117,7 +111,7 @@ def intro():
 
         elif intro_decision == "2":
             intro_choice = False
-            print("""\n'Ahhh must've been the wind' you say with a yawn.\n You go back to sleep.""")
+            print("""\n'Ahhh must've been the wind' you say with a yawn.\n You go back to sleep.\n""")
             time.sleep(3)
             print("Z")
             time.sleep(1)
@@ -144,14 +138,14 @@ _____----- |     ]              [ ||||||| ]              [     |
        _-_-|_____]--------------[_|||||||_]--------------[_____|-_-_
       ( (__________------------_____________-------------_________) )
                             THE QUIGLEY KINGDOM\n""")
-    time.sleep(3)
+    time.sleep(4)
 
     print("""   TRUMPETS BLAZE\n
           'Last night, King John's Castle was broken into,
           The Object was stolen from his secret room. A dark hooded figure
           was last seen running away. Please tell a guard if you have and information.'
           said the messenger.\n""")
-    time.sleep(6)
+    time.sleep(8)
     print("You walk up to the King sitting on his throne,\n 'My Lord, how may I assist in the search this morning?'\n")
     time.sleep(4)
     user_name = str(input("To which the king replied,\n 'I am sorry remind me of your name dear knight: "))
@@ -162,8 +156,8 @@ _____----- |     ]              [ ||||||| ]              [     |
     time.sleep(5)
     print("'I am sending you on a journey to search for The Object\n PLEASE find Meijer The Mystic before he uses its power!'\n")
     time.sleep(4)
-    print("'In your inventory you'll have 3 health potions and a sword that deals 12-17 damage.'\n")
-    time.sleep(3)
+    print("'In your inventory you'll have 3 health potions and a sword that deals 12-17 damage.\n I am also giving you some special new armor'\n")
+    time.sleep(4)
     quigley_choice = True
     while quigley_choice:
         quigley_input = input("'Where would you like to go first?'\n The Dungeon? (1) or, The Whispering Willows? (2): ")
@@ -195,6 +189,52 @@ def theDungeon(player: Player):
     ================================
               THE DUNGEON\n""")
     time.sleep(4)
+
+    print("You slowly make your way down the steps of The Dungeon,\n in the distance you hear as though someone was speaking.\n")
+    time.sleep(5)
+    print("Then silence...\n")
+    time.sleep(2)
+    print("SCREECH!!! Something scratched your armor!!!\n")
+    time.sleep(3)
+    print("With little visablitiy you see it is The Ghoul,\n You must attack!\n")
+    ghoul = Ghoul(Enemy(85, "The Ghoul", 10))
+    while ghoul.health > 0:
+        if player.health <= 0:
+            lossGame()
+            break
+        else:
+            player_hp = ghoul.ghoul_attack(player)
+            print(f"The Ghoul strikes you and your health is now at {player_hp} HP\n")
+            time.sleep(3)
+            heal_up(player)
+            ghoul_hp = player.player_attack(ghoul)
+            if ghoul_hp <= 0:
+                print("With a swift final blow, you knock down The Ghoul!\n")
+                time.sleep(2)
+            else:
+                print(f"You attack The Ghoul and his health is now at {ghoul_hp}\n")
+
+    if ghoul.health <= 0:
+        print("No, please don't kill me!\n My name is Oswin and I am from the Quigley Kindom!\n Meijer used his magic to turn me into this monster.\n")
+        time.sleep(6)
+        print("""'Meijer?' You exclaim\n 'That's actually who I am looking for. Have you seen him?'\n""")
+        time.sleep(4)
+        print("""'OH! Don't go looking for him! You will surely die!\n But for your bravery I will award you with three health potions.'\n""")
+        player.potion = player.potion + 3
+        player.dungeon_key = True
+        time.sleep(4)
+        if player.willows_key == True:
+            print("""'I can smell the leaves of the willow trees on you\n so I know you've already been there and visited The Troll.\n Head to Mount Galdr, it is Meijers home...'\n""")
+            time.sleep(7)
+            print("To Mount Galdr we go...")
+            time.sleep(2)
+            mountGaldr(player)
+        else:
+            print("""'Often Meijer is seen in the Whispering Willows\n Speaking with the spirits there and learning new magic.\n Go there, but be careful of The Troll...'\n""")
+            time.sleep(7)
+            print("To the Whispering Willows we go...")
+            time.sleep(2)
+            whisperingWillows(player)
 
 def whisperingWillows(player: Player):
     # ASCII Art from: https://www.asciiart.eu/text-to-ascii-art
@@ -231,8 +271,8 @@ def whisperingWillows(player: Player):
     time.sleep(4)
     print("\nUP FROM THE RIVER THE TROLL APPEARS, and he is singing a song\n")
     troll = Troll(Enemy(100, "The Troll", 10))
-    time.sleep(2)
-    print("""\n           As the cool fog rolls,
+    time.sleep(3)
+    print("""           As the cool fog rolls,
           
           A traveler comes marching,
 
@@ -247,9 +287,9 @@ def whisperingWillows(player: Player):
           Answer these riddles three,
 
           And I will send you on your way!\n""")
-    time.sleep(8)
-    print("You draw back, and accept The Troll's game.")
-    time.sleep(2)
+    time.sleep(10)
+    print("You draw back, and accept The Troll's game.\n")
+    time.sleep(3)
 
     while player.health > 0:
         print("""The first riddle,\n
@@ -261,7 +301,7 @@ def whisperingWillows(player: Player):
         mountain_input = input("A Giant (1), A Mountain (2), A Dragon (3), A Beanstalk (4): ")
         if mountain_input == "2":
             print("\n'So you got past the first one,\n this next one won't be as easy.'\n")
-            time.sleep(2)
+            time.sleep(3)
             break
         else:
             player_hp = troll.troll_attack(player)
@@ -272,7 +312,8 @@ def whisperingWillows(player: Player):
                 time.sleep(2)
                 heal_up(player)
                 time.sleep(1)
-                print("You must try again!")
+                print("You must try again!\n")
+                time.sleep(1)
 
 
     while player.health > 0:
@@ -281,7 +322,7 @@ def whisperingWillows(player: Player):
         footsteps_input = input("A Shadow (1), A Coin (2), Time (3), Footsteps (4): ")
         if footsteps_input == "4":
             print("\n'BLAST, two down,\n this last one is my favorite.'\n")
-            time.sleep(2)
+            time.sleep(3)
             break
         else:
             player_hp = troll.troll_attack(player)
@@ -293,6 +334,7 @@ def whisperingWillows(player: Player):
                 heal_up(player)
                 time.sleep(1)
                 print("You must try again!")
+                time.sleep(1)
 
     while player.health > 0:
         print("""       I speak with a mouth and hear without ears.
@@ -301,28 +343,31 @@ def whisperingWillows(player: Player):
         echo_input = input("An Echo (1), A Bird (2), A Ghost (3), A Flute (4): ")
         if echo_input == "1":
             print("\n'A clever one you are! For your bravery I will give you 3 health potions! \n Now what are you looking for?\n Why are you in my woods?'\n")
+            player.potion = player.potion + 3
+            player.willows_key = True
             time.sleep(5)
-            print("'I am looking for Meijer The Mystic, have you seen him?'")
+            print("'I am looking for Meijer The Mystic, have you seen him?' you exclaim.\n")
+            time.sleep(3)
             if player.dungeon_key == True:
-                player.potion = player.potion + 3
-                print("""OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!\n
-                      My name was Richard and I used to be a normal fellow who ran The Tavern in Quigley Kingdom\n
-                      I see by the claw marks on your armor that you've paid a visit to The Ghoul...
-                      Go to Mount Galdr, you will find Meijer there...""")
-                time.sleep(7)
+                print("""
+OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!
+My name was Richard and I used to be a normal fellow who ran The Tavern in Quigley Kingdom
+I see by the claw marks on your armor that means you've paid a visit to The Ghoul...
+Go to Mount Galdr, you will find Meijer there...\n""")
+                time.sleep(9)
                 print("To Mount Galdr we go...")
-                time.sleep(2)
+                time.sleep(3)
                 mountGaldr(player)
                 break
             else:
-                player.potion = player.potion + 3
-                print("""OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!\n
-                      My name was Richard and I used to be a normal fellow who ran The Tavern in Quigley Kingdom\n
-                      If it might help, he is often seen in The Dungeon but be careful!\n
-                      The Ghoul resides there in the darkness...\n""")
-                time.sleep(7)
+                print("""
+OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!
+My name was Richard and I used to be a normal fellow who ran The Tavern in Quigley Kingdom
+If it might help, he is often seen in The Dungeon but be careful!
+The Ghoul resides there in the darkness...\n""")
+                time.sleep(9)
                 print("To The Dungeon we go...")
-                time.sleep(2)
+                time.sleep(3)
                 theDungeon(player)
                 break
         else:
@@ -330,24 +375,70 @@ def whisperingWillows(player: Player):
             if player_hp <= 0:
                 lossGame()
             else:
-                print(f"WRONG! The Whispering Winds attack you,\n your health is now at {player_hp} HP")
+                print(f"WRONG! The Whispering Winds attack you,\n your health is now at {player_hp} HP\n")
                 time.sleep(2)
                 heal_up(player)
                 time.sleep(1)
-                print("You must try again!")
+                print("You must try again!\n")
+                time.sleep(1)
 
 def mountGaldr(player: Player):
     # ASCII Art from: https://www.asciiart.eu/text-to-ascii-art
-    print("""          
-         /**\\
-        /****\   /\\
-       /      \ /**\\
-      /  /\    /    \        /\    /\  /\      /\            /\/\/\  /\\
-     /  /  \  /      \      /  \/\/  \/  \  /\/  \/\  /\  /\/ / /  \/  \\
-    /  /    \/ /\     \    /    \ \  /    \/ /   /  \/  \/  \  /    \   \\
-   /  /      \/  \/\   \  /      \    /   /    \\
-__/__/_______/___/__\___\__________________________________________________
-                              MOUNT GALDR""")
+    print("""                               .++.                              
+                            ..-..+#-.                            
+                     ...  ..+.. ..+##-.                          
+                    .--#+--. ....+.##+-.. .-#.                   
+                  .+..-#+...+-#+....####++.-##+.                 
+                .+..+#+..-+.....++..+##+--...-###-               
+             .-...++.-.++. .-...+##+.++..+-##+-.-##-..           
+           .-. .--...--.+...  ....##-.-+.-..##+-+--##+.          
+         ...  .... ... ..     .. -........  ..-+-....--.  
+                            MOUNT GALDR""")
+    time.sleep(4)
+
+    print("You slowly make your way up the trail of Mount Galdr\n in the distance you see a light, then...\n")
+    time.sleep(5)
+    print("""In front of you Meijer appears saying,
+    'Greetings adventurer! I hope youve enjoyed the 
+    thrills, chills, and spills of this climb but now you will meet your doom...'\n""")
+    time.sleep(6)
+    print("With the wave of his staff he cast a magic spell,\n the orb flew and hits you right in the chest\n 'Take that HAHA!'\n")
+    time.sleep(5)
+    print("You stand unphased, the armor the King gave was resistant to magic attacks!\n")
+    time.sleep(5)
+    print("'WHAT!? It cant be! Fine, I will attack you with my staff!'\n Then disappearing and reappearing he begins his attacks!\n You must defend yourself!\n")
+    time.sleep(5)
+    meijer = Meijer(Enemy(100, "Meijer The Mystic", 10))
+    while meijer.health > 0:
+        if player.health <= 0:
+            lossGame()
+            break
+        else:
+            player_hp = meijer.meijer_attack(player)
+            print(f"Meijer The Mystic strikes you and your health is now at {player_hp} HP\n")
+            time.sleep(3)
+            heal_up(player)
+            meijer_hp = player.player_attack(meijer)
+            if meijer_hp <= 0:
+                print("With a swift final blow, you knock down Meijer The Mystic!\n")
+                time.sleep(2)
+            else:
+                print(f"You attack Meijer The Mystic and his health is now at {meijer_hp}\n")
+
+    if meijer.health <= 0:
+        print("As Meijer falls towards the ground, The Object falls out of his pocket.\n IT'S HEADING TOWARDS THE LAVA PIT!!\n What do you do?\n")
+        time.sleep(4)
+        end_choice = True
+        while end_choice:
+            end_input = input("Do you go after The Object? (1) Or do you bind Meijer? (2): ")
+            if end_input == "1":
+                end_choice = False
+                end_Game_One()
+            elif end_input == "2":
+                end_choice = False
+                end_Game_Two()
+            else:
+                print("Please enter a vaild input.")
 
 def end_Game_One():
     print("""\n And as you dove down to towards the lava pit
@@ -360,8 +451,8 @@ def end_Game_One():
         return to their homes.
         
         But out there in the darkness, with a sinister laugh echoing through the valley
-          Meijer still resided and King John and his knights were ready for when he would return...""")
-    time.sleep(13)
+          Meijer still resided and King John and his knights were ready for when he would return...\n""")
+    time.sleep(20)
     print("""╔╦╗╦ ╦╔═╗  ╔═╗╔╗╔╔╦╗
  ║ ╠═╣║╣   ║╣ ║║║ ║║
  ╩ ╩ ╩╚═╝  ╚═╝╝╚╝═╩╝""")
@@ -371,31 +462,37 @@ def end_Game_Two():
         The Object fall into the lava pit. Returning to the kingdom, King John placed
         Meijer into a special chamber that was able to prevent him from using his magic.
         Sadly, due to The Object being lost, Meijers magic could not be reversed and
-        Oswin (The Ghoul) and Richard (The Troll) were stuck in their monstrous states forever. """)
+        Oswin (The Ghoul) and Richard (The Troll) were stuck in their monstrous states forever.\n""")
     time.sleep(10)
     print("""╔╦╗╦ ╦╔═╗  ╔═╗╔╗╔╔╦╗
  ║ ╠═╣║╣   ║╣ ║║║ ║║
  ╩ ╩ ╩╚═╝  ╚═╝╝╚╝═╩╝""")
 
 def heal_up(player: Player):
+    print(f"You have {player.potion} potion(s) in your inventory.")
     if player.potion == 0:
         print("You are out of potions! Looks like you must survive!")
+        time.sleep(2)
     else:
         heal_choice = True
         while heal_choice:
             heal_input = input("Do you want to use a health potion? (Y, N): ")
-            if heal_input == "Y" or "y":
+            if heal_input == "Y":
                 heal_choice = False
                 if player.potion > 0:
                     player_hp = player.use_potion()
-                    print(f"You healed up for 10 HP, you are now at {player_hp} HP.")
-                else:
-                    heal_choice = False
-                    print("You are out of potions!\n")
+                    print(f"\nYou healed up for 10 HP, you are now at {player_hp} HP.\n")
+                    time.sleep(2)
+            elif heal_input == "y":
+                heal_choice = False
+                if player.potion > 0:
+                    player_hp = player.use_potion()
+                    print(f"\nYou healed up for 10 HP, you are now at {player_hp} HP.\n")
+                    time.sleep(2)
             else:
                 heal_choice = False
-                print("No potions were used")
-
+                print("\nNo potions were used\n")
+                time.sleep(2)
 
 def lossGame():
     print("\nOh no you died!\n Please go on this journey again to find out what happens at the end!\n")
@@ -420,5 +517,4 @@ def main():
         else:
             print("Please Enter a valid input")
 
-theDungeon(player=Player(Character(100, "k", 12, 3, False, False)))
-
+main()
