@@ -1,13 +1,22 @@
 import random
 import time
 
+# Before running this program I definetly recommend checking the readme file and the Game Design Document! :)
+
+# Time is used in this program to slow down the print statements to allow the user to read along with the story
+# Sorry if it may be too fast, I tried to make it at a reasonable pace :)
+
+# Enemy Parent Class
 class Enemy:
+    # Predefined requirements for an enemy
     def __init__(self, health: int, name: str, attack: int):
         self.health = health
         self.name = name
         self.attack = attack
-        
+
+# Character Parent Class  
 class Character:
+    # Predefined requirements for character class
     def __init__(self, health: int, name: str, attack: int, potion: int, dungeon_key: bool, willows_key: bool):
         self.health = health
         self.name = name
@@ -16,6 +25,7 @@ class Character:
         self.dungeon_key = dungeon_key
         self.willows_key = willows_key
 
+# Player Subclass, created in Intro
 class Player(Character):
     def __init__(self, player: Character):
         health = player.health
@@ -26,16 +36,20 @@ class Player(Character):
         willows_key = player.willows_key
         Character.__init__(self, health, name, attack, potion, dungeon_key, willows_key)
 
+    # Player Attack, varies in range from 12-17, takes enemy health value and subtracts attack value from that
     def player_attack(self, other_char):
         self.attack = int(random.randrange(12, 18))
         other_char.health = other_char.health - self.attack
+        # Returns enemy health value
         return other_char.health
     
+    # Player potions, subtracts 1 from total and returns player health
     def use_potion(self):
         self.potion = self.potion - 1
         self.health = self.health + 10
         return self.health
-    
+
+# Troll Subclass, created in Whispering Willows  
 class Troll(Enemy):
     def __init__(self, troll: Enemy):
         health = troll.health
@@ -43,11 +57,14 @@ class Troll(Enemy):
         attack = troll.attack
         Enemy.__init__(self, health, name, attack)
 
+    # Troll Attack, deals 10 damage
     def troll_attack(self, other_char):
         self.attack = 10
         other_char.health = other_char.health - self.attack
+        # Returns player health
         return other_char.health
-    
+
+# Ghoul Subclass, created in The Dungeon
 class Ghoul(Enemy):
     def __init__(self, ghoul: Enemy):
         health = ghoul.health
@@ -55,11 +72,14 @@ class Ghoul(Enemy):
         attack = ghoul.attack
         Enemy.__init__(self, health, name, attack)
 
+    # Ghoul Attack, varies in range from 7-9
     def ghoul_attack(self, other_char):
         self.attack = int(random.randrange(7, 10))
         other_char.health = other_char.health - self.attack
+        # returns player health
         return other_char.health
-    
+
+# Meijer Subclass, created in Mount Galdr
 class Meijer(Enemy):
     def __init__(self, meijer: Enemy):
         health = meijer.health
@@ -67,11 +87,13 @@ class Meijer(Enemy):
         attack = meijer.attack
         Enemy.__init__(self, health, name, attack)
 
+    # Meijer Attack, varies in range from 9-12
     def meijer_attack(self, other_char):
         self.attack = int(random.randrange(9, 13))
         other_char.health = other_char.health - self.attack
         return other_char.health
 
+# Intro function: Beginning of the story
 def intro():
     intro_choice = True
     # Font from: https://www.asciiart.eu/text-to-ascii-art
@@ -85,6 +107,7 @@ def intro():
     print("THUNDER STRIKES\n") 
     time.sleep(1)
     print("CRASH!!!! Someone broke into the castle...\n")
+    # Player is given the choice between going back to sleep or investigating
     while intro_choice:
         intro_decision = input("Do you investigate? (1), or, Do you go back to sleep? (2): ")
         if intro_decision == "1":
@@ -123,6 +146,7 @@ def intro():
         else:
             print("Please Enter a vaild input")
     
+# Quigley Kingdom Function: Player is created
 def quigleyKingdom():
     # ASCII Art from: https://www.asciiart.eu/buildings-and-places/castles
     print("""                             -|             |-
@@ -149,6 +173,7 @@ _____----- |     ]              [ ||||||| ]              [     |
     print("You walk up to the King sitting on his throne,\n 'My Lord, how may I assist in the search this morning?'\n")
     time.sleep(4)
     user_name = str(input("To which the king replied,\n 'I am sorry remind me of your name dear knight: "))
+    # Player Creation
     player = Player(Character(100, user_name, 12, 3, False, False))
     print(f"\n'Ahh yes, Knight {user_name}, please forgive me my head is spinning from last night.'\n")
     time.sleep(4)
@@ -158,6 +183,7 @@ _____----- |     ]              [ ||||||| ]              [     |
     time.sleep(4)
     print("'In your inventory you'll have 3 health potions and a sword that deals 12-17 damage.\n I am also giving you some special new armor'\n")
     time.sleep(4)
+    # Player is given the choice to go to The Dungeon or to The Whispering Willows
     quigley_choice = True
     while quigley_choice:
         quigley_input = input("'Where would you like to go first?'\n The Dungeon? (1) or, The Whispering Willows? (2): ")
@@ -176,6 +202,7 @@ _____----- |     ]              [ ||||||| ]              [     |
         else:
             print("Please Enter a vaild input")
 
+# The Dungeon Function: Player fights with The Ghoul
 def theDungeon(player: Player):
     # ASCII Art from: https://www.asciiart.eu/text-to-ascii-art
     print("""\n    ================================
@@ -197,16 +224,21 @@ def theDungeon(player: Player):
     print("SCREECH!!! Something scratched your armor!!!\n")
     time.sleep(3)
     print("With little visablitiy you see it is The Ghoul,\n You must attack!\n")
+    # Ghoul is created
     ghoul = Ghoul(Enemy(85, "The Ghoul", 10))
+    # Player fights with ghoul, if ghoul health is < 0, player wins, if player health < 0 then the loop breaks and game is over.
     while ghoul.health > 0:
         if player.health <= 0:
             lossGame()
             break
         else:
+            # Ghoul attack on player, returning player health
             player_hp = ghoul.ghoul_attack(player)
             print(f"The Ghoul strikes you and your health is now at {player_hp} HP\n")
             time.sleep(3)
+            # Player is given the option to heal up
             heal_up(player)
+            # Player attack on Ghoul, returning ghoul health
             ghoul_hp = player.player_attack(ghoul)
             if ghoul_hp <= 0:
                 print("With a swift final blow, you knock down The Ghoul!\n")
@@ -214,21 +246,25 @@ def theDungeon(player: Player):
             else:
                 print(f"You attack The Ghoul and his health is now at {ghoul_hp}\n")
 
+    # Story continues to either Willows or Galdr, based on whether the player has a willows key
     if ghoul.health <= 0:
         print("No, please don't kill me!\n My name is Oswin and I am from the Quigley Kindom!\n Meijer used his magic to turn me into this monster.\n")
         time.sleep(6)
         print("""'Meijer?' You exclaim\n 'That's actually who I am looking for. Have you seen him?'\n""")
         time.sleep(4)
         print("""'OH! Don't go looking for him! You will surely die!\n But for your bravery I will award you with three health potions.'\n""")
+        # Player recieves 3 potions and the dungeon key
         player.potion = player.potion + 3
         player.dungeon_key = True
         time.sleep(4)
+        # Checks to see if the player has already been to Whispering Willows, if yes they go to Mount Galdr
         if player.willows_key == True:
             print("""'I can smell the leaves of the willow trees on you\n so I know you've already been there and visited The Troll.\n Head to Mount Galdr, it is Meijers home...'\n""")
             time.sleep(7)
             print("To Mount Galdr we go...")
             time.sleep(2)
             mountGaldr(player)
+        # If not, they go to the whispering willows
         else:
             print("""'Often Meijer is seen in the Whispering Willows\n Speaking with the spirits there and learning new magic.\n Go there, but be careful of The Troll...'\n""")
             time.sleep(7)
@@ -236,6 +272,7 @@ def theDungeon(player: Player):
             time.sleep(2)
             whisperingWillows(player)
 
+# Whispering Willows Function: Player encounters The Troll
 def whisperingWillows(player: Player):
     # ASCII Art from: https://www.asciiart.eu/text-to-ascii-art
     print("""\n                             ..---.......                                    
@@ -270,6 +307,7 @@ def whisperingWillows(player: Player):
     print("As you walk into The Whispering Willows,\n you hear strange things and then quite. \n Almost a bit too quiet...")
     time.sleep(4)
     print("\nUP FROM THE RIVER THE TROLL APPEARS, and he is singing a song\n")
+    # Troll Created
     troll = Troll(Enemy(100, "The Troll", 10))
     time.sleep(3)
     print("""           As the cool fog rolls,
@@ -291,6 +329,7 @@ def whisperingWillows(player: Player):
     print("You draw back, and accept The Troll's game.\n")
     time.sleep(3)
 
+    # Player must answer the riddles, if the player health is < 0, all the riddle loops break and the game is over
     while player.health > 0:
         print("""The first riddle,\n
                 I have roots that nobody sees,
@@ -304,18 +343,20 @@ def whisperingWillows(player: Player):
             time.sleep(3)
             break
         else:
+            # Troll attack, checks to see if player health > 0, if not then game over
             player_hp = troll.troll_attack(player)
             if player_hp <= 0:
                 lossGame()
             else:
                 print(f"WRONG! The Whispering Winds attack you,\n your health is now at {player_hp} HP")
                 time.sleep(2)
+                # Player is given the option to heal up
                 heal_up(player)
                 time.sleep(1)
                 print("You must try again!\n")
                 time.sleep(1)
 
-
+    # Riddle 2
     while player.health > 0:
         print("""       The more you take, the more you leave behind.
                         What am I?\n""")
@@ -325,17 +366,20 @@ def whisperingWillows(player: Player):
             time.sleep(3)
             break
         else:
+            # Troll attack, checks to see if player health > 0, if not then game over
             player_hp = troll.troll_attack(player)
             if player_hp <= 0:
                 lossGame()
             else:
                 print(f"WRONG! The Whispering Winds attack you,\n your health is now at {player_hp} HP")
                 time.sleep(2)
+                # Player is given the option to heal up
                 heal_up(player)
                 time.sleep(1)
                 print("You must try again!")
                 time.sleep(1)
-
+    
+    # Riddle 3, if player gets it right, the story continues to The dungeon or to Mount Galdr whether or not the player has a dungeon key
     while player.health > 0:
         print("""       I speak with a mouth and hear without ears.
             I have no body but come alive with wind.
@@ -343,11 +387,13 @@ def whisperingWillows(player: Player):
         echo_input = input("An Echo (1), A Bird (2), A Ghost (3), A Flute (4): ")
         if echo_input == "1":
             print("\n'A clever one you are! For your bravery I will give you 3 health potions! \n Now what are you looking for?\n Why are you in my woods?'\n")
+            # Player recieves 3 potions and the willows key
             player.potion = player.potion + 3
             player.willows_key = True
             time.sleep(5)
             print("'I am looking for Meijer The Mystic, have you seen him?' you exclaim.\n")
             time.sleep(3)
+            # Check to see if the player has been to the dungeon, if yes they go to Mount Galdr
             if player.dungeon_key == True:
                 print("""
 OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!
@@ -359,6 +405,7 @@ Go to Mount Galdr, you will find Meijer there...\n""")
                 time.sleep(3)
                 mountGaldr(player)
                 break
+            # If not, they go to the whispering willows
             else:
                 print("""
 OH NO NOT HIM, HE IS THE ONE WHO TURNED ME INTO THIS GREEN MONSTER!
@@ -371,12 +418,14 @@ The Ghoul resides there in the darkness...\n""")
                 theDungeon(player)
                 break
         else:
+            # Troll attack, checks to see if player health > 0, if not then game over
             player_hp = troll.troll_attack(player)
             if player_hp <= 0:
                 lossGame()
             else:
                 print(f"WRONG! The Whispering Winds attack you,\n your health is now at {player_hp} HP\n")
                 time.sleep(2)
+                # Player is given the option to heal up
                 heal_up(player)
                 time.sleep(1)
                 print("You must try again!\n")
@@ -440,6 +489,7 @@ def mountGaldr(player: Player):
             else:
                 print("Please enter a vaild input.")
 
+# First ending of the game
 def end_Game_One():
     print("""\n And as you dove down to towards the lava pit
         you were able to catch The Object in the knick of time.
@@ -457,6 +507,7 @@ def end_Game_One():
  ║ ╠═╣║╣   ║╣ ║║║ ║║
  ╩ ╩ ╩╚═╝  ╚═╝╝╚╝═╩╝""")
 
+# Second ending of the game
 def end_Game_Two():
     print("""\n And as you ran toward Meijer to bind him, you looked back to see
         The Object fall into the lava pit. Returning to the kingdom, King John placed
@@ -468,35 +519,43 @@ def end_Game_Two():
  ║ ╠═╣║╣   ║╣ ║║║ ║║
  ╩ ╩ ╩╚═╝  ╚═╝╝╚╝═╩╝""")
 
+# Heal up Function: Gives the player the option to use a health potion
 def heal_up(player: Player):
+    # Prints potion amount
     print(f"You have {player.potion} potion(s) in your inventory.")
+    # If zero then the player cannot use a potion
     if player.potion == 0:
         print("You are out of potions! Looks like you must survive!")
         time.sleep(2)
     else:
         heal_choice = True
+        # While loop making sure the player gives a vaild input
         while heal_choice:
             heal_input = input("Do you want to use a health potion? (Y, N): ")
             if heal_input == "Y":
+                # breaks loop
                 heal_choice = False
-                if player.potion > 0:
-                    player_hp = player.use_potion()
-                    print(f"\nYou healed up for 10 HP, you are now at {player_hp} HP.\n")
-                    time.sleep(2)
+                # Calls use potion function given in player class
+                player_hp = player.use_potion()
+                print(f"\nYou healed up for 10 HP, you are now at {player_hp} HP.\n")
+                time.sleep(2)
             elif heal_input == "y":
+                # breaks loop
                 heal_choice = False
-                if player.potion > 0:
-                    player_hp = player.use_potion()
-                    print(f"\nYou healed up for 10 HP, you are now at {player_hp} HP.\n")
-                    time.sleep(2)
+                # Calls use potion function given in player class
+                player_hp = player.use_potion()
+                print(f"\nYou healed up for 10 HP, you are now at {player_hp} HP.\n")
+                time.sleep(2)
             else:
                 heal_choice = False
                 print("\nNo potions were used\n")
                 time.sleep(2)
 
+# Lose Game Function
 def lossGame():
     print("\nOh no you died!\n Please go on this journey again to find out what happens at the end!\n")
 
+# Main Function: Gives Main Menu, allows the player to choose whether they want to play or quit
 def main():
     main_menu = True
     # Font from: https://www.asciiart.eu/text-to-ascii-art
